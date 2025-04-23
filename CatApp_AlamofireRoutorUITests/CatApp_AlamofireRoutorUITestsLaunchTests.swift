@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class CatApp_TurtorialUITestsLaunchTests: XCTestCase {
+final class CatApp_AlamofireRoutorUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true
