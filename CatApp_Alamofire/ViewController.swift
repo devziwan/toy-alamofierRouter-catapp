@@ -5,6 +5,8 @@
 //  Created by 유지완 on 3/11/25.
 //
 
+// Alamofire에서 Routor패턴으로 리펙토링 하기
+
 import UIKit
 
 import Kingfisher
