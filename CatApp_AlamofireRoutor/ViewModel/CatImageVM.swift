@@ -7,7 +7,11 @@
 
 import Foundation
 
+import Alamofire
+
+
 import Toast
+import Combine
 
 class CatImageVM: ObservableObject {
     
@@ -15,6 +19,12 @@ class CatImageVM: ObservableObject {
     
     static let shared : CatImageVM = CatImageVM()
 
+    
+//    @Published var name: String = ""
+    
+    // disposeBag
+    var subscriptions = Set<AnyCancellable>()
+    
     var catImageList: [CatImageResponse] = []
     var uploadImageList: [UploadCatImage] = []
     var favoriteList: [AllFavoriteResponse] = []
@@ -26,9 +36,67 @@ class CatImageVM: ObservableObject {
     // MARK: - init Method
     
     init() {
-        self.fatchCatImage(imageLimit: 20) 
+        print(#file, #function, #line, "초기 ")
+        self.fatchCatImage(imageLimit: 20)
         self.fetchAllFavourites()
         self.fatchUploadCatImage()
+        
+        do {
+            let value = try testFunction(error: .decodingError, resultValue: nil)
+            print(#file, #function, #line, "초기 value: \(value)")
+//        } catch(let err as ApiError) {
+        } catch(let err) {
+            
+            if let afError = err as? AFError {
+//                switch afE
+            }
+            
+            if let customApiError = err as? ApiError {
+//                switch customApiError {
+//                case .noContent:
+//                    <#code#>
+//                case .unknownError(let _):
+//                    <#code#>
+//                case .unauthorized:
+//                    <#code#>
+//                case .decodingError:
+//                    <#code#>
+//                }
+            }
+            
+//            switch err {
+//            case .decodingError:
+//                print(#file, #function, #line, "\(err)")
+//            case .noContent:
+//                print(#file, #function, #line, "\(err)")
+//            case .unknownError(let unknownError):
+//                
+//                if let unknownError = unknownError as? AFError {
+//                    
+//                }
+//                
+//                if let unknownError = unknownError as? DecodingError {
+//                    
+//                }
+//                
+//                print(#file, #function, #line, "\(unknownError)")
+//            case .unauthorized:
+//                print(#file, #function, #line, "\(err)")
+//            }
+            
+            print(#file, #function, #line, "초기 - error: \(err)")
+        }
+        
+        
+    }
+    
+    func testFunction(error: ApiError, resultValue: String?) throws -> String{
+        
+        if let resultValue = resultValue{
+            return resultValue
+        } else {
+            throw error
+        }
     }
     
     // MARK: - Public Methods
@@ -36,6 +104,74 @@ class CatImageVM: ObservableObject {
     /// 고양이 이미지를 가져옵니다.
     /// - Parameter imageLimit: 고양이 이미지 최대 요청 수를 제한합니다.
     func fatchCatImage(imageLimit: Int) {
+        
+        
+        
+        // 성공시 - 이미지 유알엘 보여주기
+        // 실패시 - 빈 이미지 소스 보여주기 (로컬)
+        
+        // data, error type
+        CatImagesAPI.someApiCallPublisher01(imageLimit: imageLimit)
+            .compactMap({
+                $0?.first?.url
+            })
+//            .catch({ apiError in
+                
+//                switch apiError {
+//                case .decodingError:
+//                    print(#file, #function, #line, "")
+//                case .noContent:
+//                    print(#file, #function, #line, "")
+//                case .unauthorized:
+//                    print(#file, #function, #line, "")
+//                case .unknownError(let unknownError):
+//                    print(#file, #function, #line, "")
+//                }
+//                return Just(apiError.message)
+//            })
+            .sink { completion in
+                switch completion {
+                case .failure(let error):
+                    print(#file, #function, #line, "error: \(error)")
+                    
+                case .finished:
+                    print(#file, #function, #line, "finished")
+                }
+            } receiveValue: { imageUrl in
+                // 성공하면 receiveValue 들어온다.
+            }
+            .store(in: &subscriptions)
+
+        
+//        let apiCallPublisher = CatImagesAPI.someApiCallPublisher01(imageLimit: imageLimit) // [CatImageResponse]?
+//        // api success
+//        
+//        // api failure
+//        
+//        
+//        apiCallPublisher
+//            .compactMap({
+//                $0?.first
+//            }) // CatImageResponse
+//            .map({
+//                let id = $0.id
+//                let url = $0.url
+//                return (id: id, url: url)
+//            })
+//            .sink { completion in
+//                switch completion {
+//                case .finished:
+//                    print(#file, #function, #line, "")
+//                case .failure(let error):
+//                    print(#file, #function, #line, "error: \(error)")
+//                }
+//            } receiveValue: { value in
+//                let id = value.id
+//                let url = value.url
+//                
+//            }.store(in: &subscriptions)
+
+        
         CatImagesAPI.fatchCatImage(imageLimit: imageLimit ,completion: { result in
             
             switch result {
@@ -48,6 +184,17 @@ class CatImageVM: ObservableObject {
                 print(#file, #function, #line, "고양이 이미지 가져오기: \(error)")
             }
         })
+    }
+    
+    func fatchCatImageTest(imageLimit: Int) {
+        Task {
+            do {
+                let value = try await CatImagesAPI.someAsyncApiCall(imageLimit: imageLimit)
+                
+            } catch {
+                print(#file, #function, #line, "error: \(error)")
+            }
+        }
     }
 
     /// 고양이 이미지를 업로드합니다.

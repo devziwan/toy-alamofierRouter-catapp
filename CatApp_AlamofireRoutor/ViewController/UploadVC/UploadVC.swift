@@ -46,7 +46,7 @@ fileprivate func convertImageToJPEGAndUpload(_ selectedImage: UIImage) {
     
     if let imageData: Data = selectedImage.jpegData(compressionQuality: 1.0) {
         print(#file, #function, #line, "-✅ 선택한 이미지 JPEG 변환 성공")
-        
+
         CatImageVM.shared.uploadCatImage(image: imageData)
         NotificationCenter.default.post(name: .uploadDidSuccess, object: nil)
         
