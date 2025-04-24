@@ -176,7 +176,7 @@ enum CatRouter: URLRequestConvertible {
     }
 }
 
-
+//AF.request(Router.get)
 
 // API 호출 담당자
 enum CatImagesAPI {
@@ -321,7 +321,9 @@ enum CatImagesAPI {
                     print(#file, #function, #line, "-💣 JSON 디코드 실패")
                     completion(Result.failure(error))
                 }
+                
             })
+     
     }
     
     // MARK: GET
