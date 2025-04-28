@@ -17,7 +17,7 @@ struct CatImageResponse: Decodable {
 
 struct Breeds: Codable { }
 
-// MARK: - 업로드
+// MARK: - 업로드 응답처리 구조체
 
 /// 업로드  고양이 이미지 응답
 struct UploadCatImageResponse: Encodable & Decodable {
@@ -59,7 +59,7 @@ struct DeleteUploadResponse: Encodable & Decodable {
   
 }
 
-// MARK: - 즐겨찾기
+// MARK: - 즐겨찾기 응답처리 구조체
 
 /// 즐겨찾기 등록 응답
 struct CreateFavoriteResponse: Encodable & Decodable {

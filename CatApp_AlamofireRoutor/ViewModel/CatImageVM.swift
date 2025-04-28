@@ -36,7 +36,7 @@ class CatImageVM: ObservableObject {
     /// 고양이 이미지를 가져옵니다.
     /// - Parameter imageLimit: 고양이 이미지 최대 요청 수를 제한합니다.
     func fatchCatImage(imageLimit: Int) {
-        CatImagesAPI.fatchCatImage(imageLimit: imageLimit ,completion: { result in
+        CatImagesAPI.fetchCatImage(imageLimit: imageLimit ,completion: { result in
             
             switch result {
             case.success(let catImages):
@@ -77,7 +77,7 @@ class CatImageVM: ObservableObject {
     
     /// 업로드 했던 고양이 이미지를 조회 합니다.
     func fatchUploadCatImage() {
-        CatImagesAPI.fatchUploadCatImage(imageLimit: 100, completion: { result in
+        CatImagesAPI.fetchUploadCatImage(imageLimit: 100, completion: { result in
             
             switch result {
             case.success(let uploadImages):
@@ -139,7 +139,7 @@ class CatImageVM: ObservableObject {
     
     /// 고양이 이미지를 즐겨찾기 했던 것을 전체 조회합니다.
     func fetchAllFavourites() {
-        CatImagesAPI.fatchFavoritesCatImages(completion: { result in
+        CatImagesAPI.fetchFavoritesCatImages(completion: { result in
             
             switch result {
             case .success(let fatchFavorites):

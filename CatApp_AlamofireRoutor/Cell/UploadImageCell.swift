@@ -16,7 +16,7 @@ class UploadImageCell: UICollectionViewCell {
     @IBOutlet var uploadImageView: UIImageView! // 업로드 이미지
     @IBOutlet var checkIconImageView: UIImageView! // 체크 아이콘 이미지
     
-    // MARK: - Initalization
+    // MARK: - Initalization Method
     
     override func awakeFromNib() {
         super.awakeFromNib()
