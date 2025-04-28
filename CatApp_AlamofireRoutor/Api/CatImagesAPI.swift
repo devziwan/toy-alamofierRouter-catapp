@@ -38,145 +38,7 @@ enum ApiError : Error{
 
 //AF.request(CatFavoriteRouter.delete(imageId: 20))
 
-let serverUrl = "https://api.thecatapi.com/"
 
-enum CatFavoriteRouter: URLRequestConvertible {
-    
-//    case create, fetch, delete
-    
-    case create(imageId: String)
-    case fetch
-    case delete(imageId: Int)
-
-    var baseURL: URL {
-        switch self {
-        case .create, .fetch:
-            return URL(string: serverUrl + "v1" + "/favourites")!
-        case .delete:
-//            let urlString: String = serverUrl + "v1" + "/favourites/" + "\(imageId)"
-//            return URL(string: urlString)!
-            let urlString: String = serverUrl + "v1" + "/favourites/"
-            return URL(string: urlString)!
-        }
-    }
-
-    var method: HTTPMethod {
-        switch self {
-        case .create:
-            return .post
-        case .fetch:
-            return .get
-        case .delete:
-            return .delete
-        }
-    }
-    
-//
-    
-    var headers: HTTPHeaders {
-        switch self {
-        case .create, .delete, .fetch:
-            let headers: HTTPHeaders = [
-                "Content-Type": "application/json",
-                "x-api-key": "live_xLST3RHbCI8ZlLXfi7PG8uwm9GjmFsiqiAz4yrtWVGtCXeB7wZELTOZEAfnfF3Jf"
-            ]
-            return headers
-    
-
-        }
-    }
-
-    var path: String {
-        switch self {
-        case .delete(let imageId):
-            return "\(imageId)"
-        default:
-            return ""
-        }
-    }
-
-    var httpBody: [String: Any] {
-        switch self {
-        case .create(let imageId):
-            return ["image_id": imageId]
-        case .fetch:
-            return [:]
-        case .delete(imageId: let imageId):
-            return [:]
-        }
-    }
-    
-    
-    func asURLRequest() throws -> URLRequest {
-        let url = baseURL.appendingPathComponent(path)
-        var request = URLRequest(url: url)
-        request.method = method
-
-        request.headers = headers
-    
-        
-        // post
-        
-        switch method {
-        case .post:
-            
-            switch self {
-            case .create:
-                let bodyParam: Data? = try? JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
-                
-                request.httpBody = bodyParam
-            default: break
-            }
-        default: break
-        }
-//        
-//        switch self {
-//        case .create:
-//            
-//            let bodyParam: Data? = try? JSONSerialization.data(withJSONObject: httpBody, options: .prettyPrinted)
-//            
-//            request.httpBody = bodyParam
-//        default:
-//            break
-//        }
-        
-        
-        return request
-    }
-}
-
-
-enum CatRouter: URLRequestConvertible {
-    case get, post
-
-    var baseURL: URL {
-        return URL(string: "https://httpbin.org")!
-    }
-
-    var method: HTTPMethod {
-        switch self {
-        case .get: return .get
-        case .post: return .post
-        }
-    }
-
-    var path: String {
-        switch self {
-        case .get: return "get"
-        case .post: return "post"
-        }
-    }
-
-    func asURLRequest() throws -> URLRequest {
-        let url = baseURL.appendingPathComponent(path)
-        var request = URLRequest(url: url)
-        request.method = method
-
-        return request
-    }
-}
-
-//AF.request(Router.get)
 
 // API 호출 담당자
 enum CatImagesAPI {
@@ -376,10 +238,10 @@ enum CatImagesAPI {
     ///   - completion: 서버에서 받은 응답 및 에러
     static func createFavoriteCatImage(imageID: String, completion: @escaping (Result<CreateFavoriteResponse, Error>) -> Void) {
         print(#file, #function, #line, "- 즐겨찾기 요청 했습니다.")
-<<<<<<< HEAD
+
       
-        AF.request(CatFavoriteRouter.create(imageId: imageID))
-=======
+        AF.request(CatFavoriteRouter.create(imageID: imageID))
+
         
 //        let urlString: String = endPoint + "v1" + "/favourites"
 //    
@@ -393,8 +255,7 @@ enum CatImagesAPI {
 //        ]
 //        
 //        AF.request(urlString, method: .post, parameters: body, encoding: JSONEncoding.default ,headers: headers)
-        AF.request(CatFavoriteRouter.create(imageID: imageID))
->>>>>>> 52cec21
+
             .responseDecodable(of: CreateFavoriteResponse.self, completionHandler: { response in
                 switch response.result {
                     
@@ -413,9 +274,9 @@ enum CatImagesAPI {
     /// - Parameter completion: 서버에서 받은 응답 및 에러
     static func fetchFavoritesCatImages(completion: @escaping (Result<[AllFavoriteResponse], Error>) -> Void) {
          
-<<<<<<< HEAD
+
         AF.request(CatFavoriteRouter.fetch)
-=======
+
 //         let urlString: String = endPoint + "v1/favourites"
 //        
 //        let headers: HTTPHeaders = [
@@ -424,8 +285,7 @@ enum CatImagesAPI {
 //        ]
 //         
 //        AF.request(urlString, method: .get, parameters: nil, headers: headers)
-        AF.request(CatFavoriteRouter.fatch)
->>>>>>> 52cec21
+
             .responseDecodable(of: [AllFavoriteResponse].self, completionHandler: { response in
                 switch response.result {
                     
@@ -449,10 +309,10 @@ enum CatImagesAPI {
     ///   - completion: 서버에서 받은 응답 및 에러
     static func deleteFavoriteCatImage(imageID: Int, completion: @escaping (Result<DeleteFavoriteResponse, Error>) -> Void) {
         print(#file, #function, #line, "- 즐겨찾기 삭제 요청 했습니다.")
-<<<<<<< HEAD
+
     
         AF.request(CatFavoriteRouter.delete(imageId: imageID))
-=======
+
         
 //        let urlString: String = endPoint + "v1" + "/favourites/" + "\(imageID)"
 //        print(#file, #function, #line, "\(urlString)")
@@ -464,8 +324,7 @@ enum CatImagesAPI {
 //        ]
         
 //       AF.request(urlString, method: .delete, parameters: nil, headers: headers)
-        AF.request(CatFavoriteRouter.delete(imageID: imageID))
->>>>>>> 52cec21
+
            .responseDecodable(of: DeleteFavoriteResponse.self, completionHandler: { response in
                switch response.result {
                    
