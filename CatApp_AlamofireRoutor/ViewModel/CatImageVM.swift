@@ -105,6 +105,7 @@ class CatImageVM: ObservableObject {
     /// - Parameter imageLimit: 고양이 이미지 최대 요청 수를 제한합니다.
     func fatchCatImage(imageLimit: Int) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         
         
         
@@ -177,6 +178,9 @@ class CatImageVM: ObservableObject {
 =======
         CatImagesAPI.fetchCatImage(imageLimit: imageLimit ,completion: { result in
 >>>>>>> 52cec21
+=======
+        CatImagesAPI.fetchCatImage(imageLimit: imageLimit ,completion: { result in
+>>>>>>> 52cec21 (Alamofier Router 적용하기 완료)
             
             switch result {
             case.success(let catImages):
