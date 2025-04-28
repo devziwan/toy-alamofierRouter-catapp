@@ -61,7 +61,6 @@ class TabBarController: UITabBarController {
     
 } // TabBarController
 
-
  // MARK: - UITabBarControllerDelegate
 
 extension TabBarController: UITabBarControllerDelegate {
@@ -76,7 +75,6 @@ extension TabBarController: UITabBarControllerDelegate {
         }
         
         previousIndex = currentIndex
-       
     }
     
 }

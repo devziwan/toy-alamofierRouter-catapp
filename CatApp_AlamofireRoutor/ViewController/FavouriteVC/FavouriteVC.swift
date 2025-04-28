@@ -49,8 +49,6 @@ class FavouriteVC: UIViewController {
         CatImageVM.shared.fetchAllFavourites()
     }
     
-    
-    
     // MARK: - Private Methods
     
     /// 즐겨찾기 목록이 비어있다면 안내 문구 표시해준다.

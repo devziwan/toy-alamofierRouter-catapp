@@ -14,7 +14,7 @@ class ImageCell: UICollectionViewCell {
     
     @IBOutlet var catImageView: UIImageView!
     
-    // MARK: - Initalization
+    // MARK: - Initalization Method
     
     override func awakeFromNib() {
         super.awakeFromNib()

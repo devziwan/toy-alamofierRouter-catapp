@@ -59,15 +59,14 @@ class UploadPhotosVC: UIViewController {
         // 휴지통 설정
         trashButton.isEnabled = false
         
-        updateEmptyUploadView(tag: 1)
+        updateEmptyUploadView()
         
         CatImageVM.shared.onCatImageUpload = {
             DispatchQueue.main.async {
                 self.uploadImageCollectionView.reloadData()
-                self.updateEmptyUploadView(tag: 1)
+                self.updateEmptyUploadView()
             }
         }
-        
       
         updateTrashButton()
     } // viewDidLoad
@@ -112,32 +111,31 @@ class UploadPhotosVC: UIViewController {
         }
     }
     
-    /// 업로드 화면 목록이 비어있다면 안내 문구를 표시해준다
-    fileprivate func updateEmptyUploadView(tag: Int = 1) {
+    /// 업로드 화면 목록이 비어있다면 안내 문구를 컬렉션뷰 중앙으로 표시해준다.
+    /// - Parameter emptyGuideStackViewTag: 안내문구 고유 태그 값 (기본 값: 1) 설정
+    fileprivate func updateEmptyUploadView(emptyGuideStackViewTag: Int = 1) {
         if CatImageVM.shared.uploadImageList.isEmpty {
-            
+            // 아이콘 이미지뷰 생성
             let iconImage = UIImageView()
             iconImage.image = UIImage(named: "Image 1")
 //            iconImage.frame = CGRect(x: 0, y: 0, width: 34, height: 34)
             
-            
-            // 타이틀 라벨
+            // 타이틀 라벨 생성
             let titleLabel = UILabel()
             titleLabel.text = "내 고양이 사진을 올려보세요."
             titleLabel.font = .boldSystemFont(ofSize: 21)
             titleLabel.textAlignment = .center
             
-            // 라벨
+            // 서브 라벨 생성
             let label = UILabel()
             label.text = "현재 등록한 이미지가 없습니다."
             label.textAlignment = .center
             label.textColor = .gray
             
-            // 버튼
+            // 이미지등록 버튼 라벨 생성
             let button = UIButton()
             button.setTitle("이미지 등록하기", for: .normal)
             button.setTitleColor(.accent, for: .normal)
-            
             button.layer.frame = CGRect(x: 0, y: 0, width: 100, height: 50)
             button.layer.borderWidth = 1
             button.layer.borderColor = UIColor.systemGray.cgColor
@@ -148,14 +146,14 @@ class UploadPhotosVC: UIViewController {
             
             button.addTarget(self, action: #selector(moveUploadVC), for: .touchUpInside)
             
-            // t
+            // 스택뷰 생성
             let stackView = UIStackView()
             stackView.translatesAutoresizingMaskIntoConstraints = false
             stackView.axis = .vertical
             stackView.alignment = .center
             stackView.distribution = .fill
             stackView.spacing = 10
-            stackView.tag = tag
+            stackView.tag = emptyGuideStackViewTag
             
             stackView.addArrangedSubview(iconImage)
             stackView.addArrangedSubview(titleLabel)
@@ -163,15 +161,14 @@ class UploadPhotosVC: UIViewController {
             stackView.addArrangedSubview(button)
             
             uploadImageCollectionView.addSubview(stackView)
-            
-         
             // 스택뷰가 가운데에 오도록 제약조건 설정
             NSLayoutConstraint.activate([
                 stackView.centerXAnchor.constraint(equalTo: uploadImageCollectionView.centerXAnchor),
                 stackView.centerYAnchor.constraint(equalTo: uploadImageCollectionView.centerYAnchor)
             ])
         } else {
-            uploadImageCollectionView.viewWithTag(tag)?.removeFromSuperview()
+            // 업로드 컬렉션뷰가 비어있지 않으면 안내문구가 사라진다.
+            uploadImageCollectionView.viewWithTag(emptyGuideStackViewTag)?.removeFromSuperview()
         }
     }
     
@@ -203,6 +200,7 @@ class UploadPhotosVC: UIViewController {
     
     /// 이미지 업로드 요청하는 동안 액티비티 토스트가 계속 나타난다.
     @objc fileprivate func showUploadActivityToast(_ sender: Notification) {
+        // 이미지 업로드 컬렉션뷰안에 서브뷰 중에서 Tag값 1를 가진 뷰를 제거한다.
         uploadImageCollectionView.viewWithTag(1)?.removeFromSuperview()
         
         var toastStyle = ToastStyle()
@@ -282,7 +280,7 @@ class UploadPhotosVC: UIViewController {
                     self.uploadImageCollectionView.deleteItems(at: selectedItems)
                 } completion: { _ in
                     print(#file, #function, #line, "-✅ 업로드 이미지 삭제 성공")
-                    self.updateEmptyUploadView(tag: 1)
+                    self.updateEmptyUploadView()
                 }
                 
                 // 이미지 삭제가 성공 되면 편집모드 해제
